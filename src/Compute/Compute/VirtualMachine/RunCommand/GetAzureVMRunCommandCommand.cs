@@ -109,7 +109,6 @@ namespace Microsoft.Azure.Commands.Compute.Automation
                     {
                         psObject.Add(ComputeAutomationAutoMapperProfile.Mapper.Map<VirtualMachineRunCommand, PSVirtualMachineRunCommandList>(r));
                     }
-                    //WriteObject(TopLevelWildcardFilter(ResourceGroupName, VMName, psObject), true);
                     WriteObject(psObject, true);
                 }
             });
