@@ -58,10 +58,12 @@
     <Compile Include="Models\PSAzureSubscriptionExtended.cs" />
     <Compile Include="DataCollection\EnableAzureDataCollection.cs" />
     <Compile Include="DataCollection\DisableAzureDataCollection.cs" />
+    <Compile Include="Models\PSSubscriptionServicePrincipal.cs" />
     <Compile Include="Profile\SelectAzureProfile.cs" />
     <Compile Include="Profile\NewAzureProfile.cs" />
     <Compile Include="Profile\ClearAzureProfile.cs" />
     <Compile Include="Account\AddAzureAccount.cs" />
+    <Compile Include="ServicePrincipal\SubscriptionServicePrincipalExtensions.cs" />
     <Compile Include="Subscription\RemoveAzureSubscription.cs" />
     <Compile Include="Account\GetAzureAccount.cs" />
     <Compile Include="Account\RemoveAzureAccount.cs" />
@@ -71,6 +73,9 @@
     <Compile Include="Subscription\SelectAzureSubscription.cs" />
     <Compile Include="Subscription\SetAzureSubscription.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicePrincipal\NewAzureSubscriptionServicePrincipal.cs" />
+    <Compile Include="ServicePrincipal\GetAzureSubscriptionServicePrincipal.cs" />
+    <Compile Include="ServicePrincipal\RemoveAzureSubscriptionServicePrincipal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Microsoft.WindowsAzure.Commands.Profile.format.ps1xml">

@@ -82,8 +82,13 @@
     <Compile Include="Models\MetadataResponse.cs" />
     <Compile Include="Models\ModelExtensions.cs" />
     <Compile Include="Models\PSResourceGroup.cs" />
+    <Compile Include="Models\PSSubscriptionServicePrincipal.cs" />
     <Compile Include="Models\RMProfileClient.cs" />
     <Compile Include="Models\SimpleAccessToken.cs" />
+    <Compile Include="ServicePrincipal\GetAzureSubscriptionServicePrincipal.cs" />
+    <Compile Include="ServicePrincipal\NewAzureSubscriptionServicePrincipal.cs" />
+    <Compile Include="ServicePrincipal\RemoveAzureSubscriptionServicePrincipal.cs" />
+    <Compile Include="ServicePrincipal\SubscriptionServicePrincipalExtensions.cs" />
     <Compile Include="Subscription\GetAzureRMSubscription.cs" />
     <Compile Include="Account\ConnectAzureRmAccount.cs" />
     <Compile Include="Context\GetAzureRMContext.cs" />
@@ -121,6 +126,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterBuild">
     <ItemGroup>

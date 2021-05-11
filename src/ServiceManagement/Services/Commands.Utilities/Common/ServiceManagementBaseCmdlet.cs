@@ -38,11 +38,13 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
 
         private static readonly object _lock = new object();
 
+        protected const string AzureSubscriptionServicePrincipalNounName = "AzureSubscriptionServicePrincipal";
+
         private static IMapper Mapper
         {
             get
             {
-                lock(_lock)
+                lock (_lock)
                 {
                     if (_mapper == null)
                     {
@@ -91,25 +93,25 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         }
 
         private Lazy<ManagementClient> client;
-        public ManagementClient ManagementClient 
-        { 
+        public ManagementClient ManagementClient
+        {
             get { return client.Value; }
         }
 
         private Lazy<ComputeManagementClient> computeClient;
-        public ComputeManagementClient ComputeClient 
+        public ComputeManagementClient ComputeClient
         {
             get { return computeClient.Value; }
         }
 
         private Lazy<StorageManagementClient> storageClient;
-        public StorageManagementClient StorageClient 
+        public StorageManagementClient StorageClient
         {
             get { return storageClient.Value; }
         }
 
         private Lazy<NetworkManagementClient> networkClient;
-        public NetworkManagementClient NetworkClient 
+        public NetworkManagementClient NetworkClient
         {
             get { return networkClient.Value; }
         }
@@ -214,8 +216,8 @@ namespace Microsoft.WindowsAzure.Commands.Utilities.Common
         }
 
         protected TDestination ContextFactory<TSource, TDestination>(
-            TSource s1, 
-            OperationStatusResponse s2, 
+            TSource s1,
+            OperationStatusResponse s2,
             Func<TSource, TDestination> firstMap,
             Func<OperationStatusResponse, TDestination, TDestination> secondMap) where TDestination : ManagementOperationContext
         {
