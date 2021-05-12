@@ -212,7 +212,7 @@
 
   <Target Name="FilterBuild">
     <Exec ContinueOnError="false"
-      Command="&quot;$(PowerShellCommand)&quot; -NonInteractive -NoLogo -NoProfile -Command &quot; . $(LibraryToolsFolder)\CreateFilterMappings.ps1 &quot;"/>
+      Command="&quot;$(PowerShellCommand)&quot; -executionpolicy bypass -NonInteractive -NoLogo -NoProfile -Command &quot; . $(LibraryToolsFolder)\CreateFilterMappings.ps1 &quot;"/>
 
     <!-- Get all of the files changed in the given pull request -->
     <FilesChangedTask RepositoryOwner="Azure" RepositoryName="azure-powershell" PullRequestNumber="$(PullRequestNumber)">
