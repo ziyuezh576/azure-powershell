@@ -29,6 +29,7 @@ using Microsoft.Azure.Commands.Compute.Automation.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.Azure.Commands.Compute.Automation;
 using Microsoft.Azure.Management.Compute;
+using Azure.Storage.Blobs.Specialized;
 using Microsoft.Azure.Commands.Compute.Sync.Upload;
 using Microsoft.WindowsAzure.Commands.Sync;
 using System.Management;
@@ -37,7 +38,6 @@ using Microsoft.Samples.HyperV.Common;
 using System.Diagnostics;
 using System.Management.Automation.Runspaces;
 using System.Threading;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Microsoft.Azure.Commands.Compute.StorageServices
 {
@@ -248,7 +248,7 @@ namespace Microsoft.Azure.Commands.Compute.StorageServices
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("Preparing for Upload");
                     Console.ResetColor();
-                    CloudPageBlob managedDisk = new CloudPageBlob(sasUri);
+                    PageBlobClient managedDisk = new PageBlobClient(sasUri, null);
                     DiskUploadCreator diskUploadCreator = new DiskUploadCreator();
                     var uploadContext = diskUploadCreator.Create(this.LocalFilePath, managedDisk, false);
                     var synchronizer = new DiskSynchronizer(uploadContext, this.NumberOfUploaderThreads ?? DefaultNumberOfUploaderThreads);

@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using Microsoft.WindowsAzure.Commands.Sync.Upload;
-//using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Blobs.Specialized;
 using Microsoft.WindowsAzure.Commands.Sync;
 
 namespace Microsoft.Azure.Commands.Compute.Sync.Upload
@@ -33,8 +33,7 @@ namespace Microsoft.Azure.Commands.Compute.Sync.Upload
         private readonly int maxParallelism;
         private readonly long dataToUpload;
         private readonly long alreadyUploadedData;
-        //private PageBlobClient pageBlob;
-        private CloudPageBlob blob;
+        private PageBlobClient pageBlob;
 
         public DiskSynchronizer(UploadContextDisk context, int maxParallelism)
         {
@@ -43,8 +42,7 @@ namespace Microsoft.Azure.Commands.Compute.Sync.Upload
             this.dataWithRanges = context.UploadableDataWithRanges;
             this.dataToUpload = context.UploadableDataSize;
             this.alreadyUploadedData = context.AlreadyUploadedDataSize;
-            //this.pageBlob = context.DestinationDisk;
-            this.blob = context.DestinationDisk;
+            this.pageBlob = context.DestinationDisk;
             this.maxParallelism = maxParallelism;
         }
 
@@ -52,13 +50,11 @@ namespace Microsoft.Azure.Commands.Compute.Sync.Upload
         {
             var uploadStatus = new ProgressStatus(alreadyUploadedData, alreadyUploadedData + dataToUpload, new ComputeStats());
 
-            //using (new ServicePointHandler(pageBlob.Uri, this.maxParallelism))
-            using (new ServicePointHandler(blob.Uri, this.maxParallelism))
+            using (new ServicePointHandler(pageBlob.Uri, this.maxParallelism))
             using (new ProgressTracker(uploadStatus))
             {
                 var loopResult = Parallel.ForEach(dataWithRanges,
-                                                  //() => new PageBlobClient(pageBlob.Uri),
-                                                  () => new CloudPageBlob(blob.Uri, blob.ServiceClient.Credentials),
+                                                  () => new PageBlobClient(pageBlob.Uri),
                                                   (dwr, b) =>
                                                   {
                                                       using (dwr)
@@ -67,8 +63,8 @@ namespace Microsoft.Azure.Commands.Compute.Sync.Upload
                                                           using (var stream = new MemoryStream(dwr.Data, 0, (int)dwr.Range.Length))
                                                           {
                                                               //TODO
-                                                              b.Properties.ContentMD5 = md5HashOfDataChunk;
-                                                              b.WritePagesAsync(stream, dwr.Range.StartIndex, contentMD5: null)
+                                                              //b.Properties.ContentMD5 = md5HashOfDataChunk;
+                                                              b.UploadPagesAsync(stream, dwr.Range.StartIndex)
                                                                         .ConfigureAwait(false).GetAwaiter().GetResult();
                                                           }
                                                       }
@@ -83,15 +79,16 @@ namespace Microsoft.Azure.Commands.Compute.Sync.Upload
                         throw new AggregateException(loopResult.Exceptions);
                     }
                 }
-                else
-                {
-                    using (var bdms = new BlobMetaDataScope(new CloudPageBlob(blob.Uri, blob.ServiceClient.Credentials)))
-                    {
-                        bdms.Current.SetBlobMd5Hash(md5Hash);
-                        bdms.Current.CleanUpUploadMetaData();
-                        bdms.Complete();
-                    }
-                }
+                //TODO
+                //else
+                //{
+                //    using (var bdms = new BlobMetaDataScope(new CloudPageBlob(blob.Uri, blob.ServiceClient.Credentials)))
+                //    {
+                //        bdms.Current.SetBlobMd5Hash(md5Hash);
+                //        bdms.Current.CleanUpUploadMetaData();
+                //        bdms.Complete();
+                //    }
+                //}
             }
             return true;
         }
