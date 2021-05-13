@@ -12,7 +12,7 @@
 // limitations under the License.
 // ----------------------------------------------------------------------------------
 
-//using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Blobs.Specialized;
 using Microsoft.WindowsAzure.Commands.Tools.Vhd.Model;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
@@ -26,8 +26,7 @@ namespace Microsoft.Azure.Commands.Compute.Sync.Upload
     {
         private bool disposed;
 
-        //public PageBlobClient DestinationDisk { get; set; }
-        public CloudPageBlob DestinationDisk { get; set; }
+        public PageBlobClient DestinationDisk { get; set; }
 
         public IEnumerable<DataWithRange> UploadableDataWithRanges { get; set; }
 
