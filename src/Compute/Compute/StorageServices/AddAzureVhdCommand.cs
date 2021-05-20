@@ -29,7 +29,6 @@ using Microsoft.Azure.Commands.Compute.Automation.Models;
 using Microsoft.WindowsAzure.Commands.Utilities.Common;
 using Microsoft.Azure.Commands.Compute.Automation;
 using Microsoft.Azure.Management.Compute;
-using Azure.Storage.Blobs.Specialized;
 using Microsoft.Azure.Commands.Compute.Sync.Upload;
 using Microsoft.WindowsAzure.Commands.Sync;
 using System.Management;
@@ -38,6 +37,8 @@ using Microsoft.Samples.HyperV.Common;
 using System.Diagnostics;
 using System.Management.Automation.Runspaces;
 using System.Threading;
+//using Microsoft.Azure.Commands.Compute.helpers;
+
 
 namespace Microsoft.Azure.Commands.Compute.StorageServices
 {

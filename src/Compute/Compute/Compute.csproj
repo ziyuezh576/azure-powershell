@@ -9,6 +9,7 @@
 
   <PropertyGroup>
     <RootNamespace>$(LegacyAssemblyPrefix)$(PsModuleName)</RootNamespace>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +19,6 @@
     <PackageReference Include="System.ServiceModel.Primitives" Version="4.4.1" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.0" />
     <PackageReference Include="System.Management" Version="4.5.0" />
-    <PackageReference Include="Azure.Storage.Blobs" Version ="12.7.0" />
   </ItemGroup>
 
   <ItemGroup>
