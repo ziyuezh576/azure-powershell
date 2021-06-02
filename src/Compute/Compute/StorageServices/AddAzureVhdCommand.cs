@@ -37,6 +37,7 @@ using Microsoft.Samples.HyperV.Common;
 using System.Diagnostics;
 using System.Management.Automation.Runspaces;
 using System.Threading;
+using Azure.Storage.Blobs.Specialized;
 //using Microsoft.Azure.Commands.Compute.helpers;
 
 
