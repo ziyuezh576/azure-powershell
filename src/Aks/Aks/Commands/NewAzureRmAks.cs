@@ -139,6 +139,28 @@ namespace Microsoft.Azure.Commands.Aks
         [Parameter(Mandatory = false, HelpMessage = "The resource Id of public IP prefix for node pool.")]
         public string NodePublicIPPrefixID { get; set; }
 
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public string AssignIdentity { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public int LoadBalancerAllocatedOutboundPort { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public int LoadBalancerManagedOutboundIpCount { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public string[] LoadBalancerOutboundIp { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public string[] LoadBalancerOutboundIpPrefix { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public string[] LoadBalancerOutboundPort { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public int LoadBalancerIdleTimeoutInMinute { get; set; }
+
+
         private AcsServicePrincipal acsServicePrincipal;
 
         public override void ExecuteCmdlet()
@@ -392,6 +414,15 @@ namespace Microsoft.Azure.Commands.Aks
             {
                 networkProfile.DockerBridgeCidr = DockerBridgeCidr;
             }
+            if (this.IsParameterBound(c => c.NodeVnetSubnetID))
+            {
+
+            }
+            ManagedClusterLoadBalancerProfile loadBalancerProfile = new ManagedClusterLoadBalancerProfile();
+            loadBalancerProfile.ManagedOutboundIPs = new ManagedClusterLoadBalancerProfileManagedOutboundIPs(LoadBalancerManagedOutboundIpCount);
+            loadBalancerProfile.OutboundIPs = new ManagedClusterLoadBalancerProfileOutboundIPs(LoadBalancerOutboundIp.ToList().Select(x => { new ResourceReference(x); } ));
+            loadBalancerProfile.IdleTimeoutInMinutes = LoadBalancerIdleTimeoutInMinute;
+            loadBalancerProfile.AllocatedOutboundPorts = LoadBalancerAllocatedOutboundPort;
             return networkProfile;
         }
 
