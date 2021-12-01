@@ -140,7 +140,13 @@ namespace Microsoft.Azure.Commands.Aks
         public string NodePublicIPPrefixID { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "")]
+        public SwitchParameter EnableManagedIdentity { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
         public string AssignIdentity { get; set; }
+
+        [Parameter(Mandatory = false, HelpMessage = "")]
+        public string AssignKubeletIdentity { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "")]
         public int LoadBalancerAllocatedOutboundPort { get; set; }
@@ -153,9 +159,6 @@ namespace Microsoft.Azure.Commands.Aks
 
         [Parameter(Mandatory = false, HelpMessage = "")]
         public string[] LoadBalancerOutboundIpPrefix { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public string[] LoadBalancerOutboundPort { get; set; }
 
         [Parameter(Mandatory = false, HelpMessage = "")]
         public int LoadBalancerIdleTimeoutInMinute { get; set; }
@@ -359,6 +362,8 @@ namespace Microsoft.Azure.Commands.Aks
 
             var addonProfiles = CreateAddonsProfiles();
 
+            var identity = GetIdentity();
+
             WriteVerbose(string.Format(Resources.DeployingYourManagedKubeCluster, AcsSpFilePath));
 
             var managedCluster = new ManagedCluster(
@@ -373,7 +378,8 @@ namespace Microsoft.Azure.Commands.Aks
                 servicePrincipalProfile: spProfile,
                 aadProfile: aadProfile,
                 addonProfiles: addonProfiles,
-                networkProfile: networkProfile);
+                networkProfile: networkProfile,
+                identity: identity);
 
             if (EnableRbac.IsPresent)
             {
@@ -418,12 +424,54 @@ namespace Microsoft.Azure.Commands.Aks
             {
 
             }
-            ManagedClusterLoadBalancerProfile loadBalancerProfile = new ManagedClusterLoadBalancerProfile();
-            loadBalancerProfile.ManagedOutboundIPs = new ManagedClusterLoadBalancerProfileManagedOutboundIPs(LoadBalancerManagedOutboundIpCount);
-            loadBalancerProfile.OutboundIPs = new ManagedClusterLoadBalancerProfileOutboundIPs(LoadBalancerOutboundIp.ToList().Select(x => { new ResourceReference(x); } ));
-            loadBalancerProfile.IdleTimeoutInMinutes = LoadBalancerIdleTimeoutInMinute;
-            loadBalancerProfile.AllocatedOutboundPorts = LoadBalancerAllocatedOutboundPort;
+            ManagedClusterLoadBalancerProfile loadBalancerProfile = new ManagedClusterLoadBalancerProfile
+            {
+                ManagedOutboundIPs = new ManagedClusterLoadBalancerProfileManagedOutboundIPs(LoadBalancerManagedOutboundIpCount),
+                OutboundIPs = new ManagedClusterLoadBalancerProfileOutboundIPs(LoadBalancerOutboundIp.ToList().Select(x => { return new ResourceReference(x); }).ToList()),
+                OutboundIPPrefixes = new ManagedClusterLoadBalancerProfileOutboundIPPrefixes(LoadBalancerOutboundIpPrefix.ToList().Select(x => { return new ResourceReference(x); }).ToList()),
+                IdleTimeoutInMinutes = LoadBalancerIdleTimeoutInMinute,
+                AllocatedOutboundPorts = LoadBalancerAllocatedOutboundPort
+            };
+            if (this.IsParameterBound(c => c.AcrNameToAttach))
+            {
+                if (EnableManagedIdentity.IsPresent)
+                {
+
+                }
+            }
+            networkProfile.LoadBalancerProfile = loadBalancerProfile;
             return networkProfile;
+        }
+
+        private ManagedClusterIdentity GetIdentity()
+        {
+            ManagedClusterIdentity identity = null;
+
+            if (!EnableManagedIdentity.IsPresent && this.IsParameterBound(c => c.AssignIdentity))
+            {
+                throw new Exception();
+            }
+            if (EnableManagedIdentity.IsPresent && !this.IsParameterBound(c => c.AssignIdentity))
+            {
+                identity = new ManagedClusterIdentity
+                {
+                    Type = ResourceIdentityType.SystemAssigned
+                };
+            }
+            else if (EnableManagedIdentity.IsPresent && this.IsParameterBound(c => c.AssignIdentity))
+            {
+                Dictionary<string, ManagedClusterIdentityUserAssignedIdentitiesValue> userAssignedIdentities = new Dictionary<string, ManagedClusterIdentityUserAssignedIdentitiesValue>
+                {
+                    { AssignIdentity, new ManagedClusterIdentityUserAssignedIdentitiesValue() }
+                };
+                identity = new ManagedClusterIdentity
+                {
+                    Type = ResourceIdentityType.UserAssigned,
+                    UserAssignedIdentities = userAssignedIdentities
+                };
+            }
+
+            return identity;
         }
 
         private ManagedClusterWindowsProfile GetWindowsProfile()
