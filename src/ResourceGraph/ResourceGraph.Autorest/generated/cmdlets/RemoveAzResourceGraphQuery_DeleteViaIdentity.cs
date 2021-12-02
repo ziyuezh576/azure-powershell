@@ -6,6 +6,7 @@
 namespace Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Cmdlets
 {
     using static Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Runtime.Extensions;
+    using System;
 
     /// <summary>Delete a graph query.</summary>
     /// <remarks>
@@ -190,7 +191,7 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Cmdlets
                     case Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Runtime.Events.Information:
                     {
                         var data = messageData();
-                        WriteInformation(data, new[] { data.Message });
+                        WriteInformation(data.Message, new string[]{});
                         return ;
                     }
                     case Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Runtime.Events.Debug:

@@ -98,10 +98,22 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models
                 return;
             }
             // actually deserialize
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId = (string) content.GetValueForProperty("SubscriptionId",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName = (string) content.GetValueForProperty("ResourceGroupName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName = (string) content.GetValueForProperty("ResourceName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id = (string) content.GetValueForProperty("Id",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id, global::System.Convert.ToString);
+            if (content.Contains("SubscriptionId"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId = (string) content.GetValueForProperty("SubscriptionId",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId, global::System.Convert.ToString);
+            }
+            if (content.Contains("ResourceGroupName"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName = (string) content.GetValueForProperty("ResourceGroupName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName, global::System.Convert.ToString);
+            }
+            if (content.Contains("ResourceName"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName = (string) content.GetValueForProperty("ResourceName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName, global::System.Convert.ToString);
+            }
+            if (content.Contains("Id"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id = (string) content.GetValueForProperty("Id",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id, global::System.Convert.ToString);
+            }
             AfterDeserializeDictionary(content);
         }
 
@@ -119,10 +131,22 @@ namespace Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models
                 return;
             }
             // actually deserialize
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId = (string) content.GetValueForProperty("SubscriptionId",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName = (string) content.GetValueForProperty("ResourceGroupName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName = (string) content.GetValueForProperty("ResourceName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName, global::System.Convert.ToString);
-            ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id = (string) content.GetValueForProperty("Id",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id, global::System.Convert.ToString);
+            if (content.Contains("SubscriptionId"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId = (string) content.GetValueForProperty("SubscriptionId",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).SubscriptionId, global::System.Convert.ToString);
+            }
+            if (content.Contains("ResourceGroupName"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName = (string) content.GetValueForProperty("ResourceGroupName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceGroupName, global::System.Convert.ToString);
+            }
+            if (content.Contains("ResourceName"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName = (string) content.GetValueForProperty("ResourceName",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).ResourceName, global::System.Convert.ToString);
+            }
+            if (content.Contains("Id"))
+            {
+                ((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id = (string) content.GetValueForProperty("Id",((Microsoft.Azure.PowerShell.Cmdlets.ResourceGraph.Models.IResourceGraphIdentityInternal)this).Id, global::System.Convert.ToString);
+            }
             AfterDeserializePSObject(content);
         }
 
