@@ -139,30 +139,6 @@ namespace Microsoft.Azure.Commands.Aks
         [Parameter(Mandatory = false, HelpMessage = "The resource Id of public IP prefix for node pool.")]
         public string NodePublicIPPrefixID { get; set; }
 
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public SwitchParameter EnableManagedIdentity { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public string AssignIdentity { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public string AssignKubeletIdentity { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public int LoadBalancerAllocatedOutboundPort { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public int LoadBalancerManagedOutboundIpCount { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public string[] LoadBalancerOutboundIp { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public string[] LoadBalancerOutboundIpPrefix { get; set; }
-
-        [Parameter(Mandatory = false, HelpMessage = "")]
-        public int LoadBalancerIdleTimeoutInMinute { get; set; }
-
 
         private AcsServicePrincipal acsServicePrincipal;
 
@@ -319,7 +295,7 @@ namespace Microsoft.Azure.Commands.Aks
                         throw new AzPSInvalidOperationException(errorMessage, ErrorKind.InternalError);
                     }
                 }
-                catch(Win32Exception exception)
+                catch (Win32Exception exception)
                 {
                     var message = string.Format(Resources.FailedToRunSshKeyGen, exception.Message);
                     throw new AzPSInvalidOperationException(message, ErrorKind.InternalError);
@@ -360,6 +336,8 @@ namespace Microsoft.Azure.Commands.Aks
 
             var networkProfile = GetNetworkProfile();
 
+            var apiServerAccessProfile = CreateOrUpdateApiServerAccessProfile(null);
+
             var addonProfiles = CreateAddonsProfiles();
 
             var identity = GetIdentity();
@@ -379,11 +357,16 @@ namespace Microsoft.Azure.Commands.Aks
                 aadProfile: aadProfile,
                 addonProfiles: addonProfiles,
                 networkProfile: networkProfile,
-                identity: identity);
+                identity: identity,
+                apiServerAccessProfile: apiServerAccessProfile);
 
             if (EnableRbac.IsPresent)
             {
                 managedCluster.EnableRBAC = EnableRbac;
+            }
+            if (this.IsParameterBound(c => c.FqdnSubdomain))
+            {
+                managedCluster.FqdnSubdomain = FqdnSubdomain;
             }
             //if(EnablePodSecurityPolicy.IsPresent)
             //{
@@ -440,6 +423,8 @@ namespace Microsoft.Azure.Commands.Aks
                 }
             }
             networkProfile.LoadBalancerProfile = loadBalancerProfile;
+            networkProfile.LoadBalancerProfile = CreateOrUpdateLoadBalancerProfile(null);
+
             return networkProfile;
         }
 
